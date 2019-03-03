@@ -4,9 +4,10 @@
   "description": "basic snake game written in Typescript",
   "main": "src/index.ts",
   "scripts": {
-    "build": "tsc && rollup -c && node-sass --output-style compressed style.scss > build/style.css && echo 'Build Done.'",
-    "start": "live-server . --watch=build",
-    "lint": "find src -type f -name '*.ts' | xargs tslint"
+    "build:closure-es5": "gulp --es5",
+    "build:closure-es6": "gulp --es6",
+    "build:webpack-es5": "webpack -p --env.transpile=true",
+    "build:webpack-es6": "webpack -p --env.transpile=false"
   },
   "repository": {
     "type": "git",
@@ -21,11 +22,18 @@
     "url": "https://gitlab.com/serkanyersen/snake/issues"
   },
   "homepage": "https://gitlab.com/serkanyersen/snake#README",
-  "dependencies": {
-    "live-server": "^1.0.0",
-    "node-sass": "^4.6.0",
-    "rollup": "^0.51.2",
+  "devDependencies": {
+    "@babel/core": "^7.3.4",
+    "@babel/preset-env": "^7.3.4",
+    "babel-loader": "^8.0.5",
+    "google-closure-compiler": "^20190215.0.2",
+    "gulp": "^3.9.1",
+    "ts-loader": "^5.3.3",
+    "tsickle": "^0.34.3",
     "tslint": "^5.8.0",
-    "typescript": "^2.6.1"
-  }
+    "typescript": "^3.3.3333",
+    "webpack": "^4.29.6",
+    "webpack-cli": "^3.2.3"
+  },
+  "dependencies": {}
 }

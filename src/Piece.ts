@@ -1,6 +1,7 @@
 import {SIZE} from "./constants";
 import Utils from "./Utils";
 import Locations from "./Locations";
+import {Direction} from "./Directions";
 
 export default class Piece {
     next: Piece;
@@ -10,7 +11,7 @@ export default class Piece {
         public x: number,
         public y: number,
         public type: string = "body",
-        public direction: string = "RIGHT") {
+        public direction: Direction = Direction.RIGHT) {
 
         this.el = document.createElement("div");
         this.next = null;
@@ -40,7 +41,7 @@ export default class Piece {
         }
     }
 
-    move(x: number, y: number, direction: string = "RIGHT"): void {
+    move(x: number, y: number, direction: Direction = Direction.RIGHT): void {
         // Transition through walls
         if (x < 0) {
             x = Utils.snap(document.body.clientWidth) - SIZE;

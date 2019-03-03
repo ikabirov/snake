@@ -1,4 +1,4 @@
-export enum keys {
+const enum keys {
     RETURN = 13,
     SPACE = 32,
     LEFT = 37,
@@ -11,7 +11,15 @@ export enum keys {
     K = 75
 }
 
-export const SIZE = 20;
-export const MARGIN = 60;
-export const SLOWEST = 250;
-export const FASTEST = 0;
+const SIZE = 20;
+const MARGIN = 60;
+const SLOWEST = 250;
+const FASTEST = 0;
+
+export {
+    keys,
+    SIZE,
+    MARGIN,
+    SLOWEST,
+    FASTEST,
+};

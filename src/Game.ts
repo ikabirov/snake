@@ -1,9 +1,9 @@
-import {SIZE, MARGIN, SLOWEST, FASTEST, keys} from "./constants";
+import {FASTEST, keys, MARGIN, SIZE, SLOWEST} from "./constants";
 import Piece from "./Piece";
 import Utils from "./Utils";
 import Level from "./Level";
 import Locations from "./Locations";
-import Directions from "./Directions";
+import {Direction, flushDirection, peekDirection, popDirection, setDirection} from "./Directions";
 
 export default class Game {
     public head: Piece;
@@ -21,6 +21,7 @@ export default class Game {
 
     constructor(private levels: Level[]) {
         this.head = new Piece(80, 80, "head");
+        this.food = this.createNewFood();
 
         this.resetHead();
         this.handleFood();
@@ -56,7 +57,7 @@ export default class Game {
             this.length = 0;
             this.debugSpeed = 0;
             this.score = 0;
-            Directions.flush();
+            flushDirection();
 
             this.showScore();
             this.moving = true;
@@ -93,11 +94,15 @@ export default class Game {
         return [x, y];
     }
 
+    createNewFood(): Piece {
+        let [foodX, foodY] = this.getFoodLocation();
+        return new Piece(foodX, foodY, "food");
+    }
+
     handleFood(): void {
         // If the there is no food, create a random one.
         if (this.food == null) {
-            let [foodX, foodY] = this.getFoodLocation();
-            this.food = new Piece(foodX, foodY, "food");
+            this.food = this.createNewFood();
         }
 
         // if head and food collided, replace head with the food
@@ -172,22 +177,22 @@ export default class Game {
         }
 
         // If Game is not over, then move the snake to requested direction
-        let direction = Directions.pop();
+        let direction = popDirection();
 
         if (direction === keys.RIGHT) {
-            this.head.move(this.head.x + SIZE, this.head.y, keys[direction]);
+            this.head.move(this.head.x + SIZE, this.head.y, Direction.RIGHT);
         }
 
         if (direction === keys.LEFT) {
-            this.head.move(this.head.x - SIZE, this.head.y, keys[direction]);
+            this.head.move(this.head.x - SIZE, this.head.y, Direction.LEFT);
         }
 
         if (direction === keys.DOWN) {
-            this.head.move(this.head.x, this.head.y + SIZE, keys[direction]);
+            this.head.move(this.head.x, this.head.y + SIZE, Direction.DOWN);
         }
 
         if (direction === keys.UP) {
-            this.head.move(this.head.x, this.head.y - SIZE, keys[direction]);
+            this.head.move(this.head.x, this.head.y - SIZE, Direction.UP);
         }
 
         // Check if we caught caught the food
@@ -199,7 +204,7 @@ export default class Game {
      * Don"t let snake to go backwards
      */
     notBackwards(key: number): boolean {
-        let lastDirection = Directions.peek();
+        let lastDirection = peekDirection();
 
         if (lastDirection === keys.UP && key === keys.DOWN
             || lastDirection === keys.DOWN && key === keys.UP
@@ -247,6 +252,15 @@ export default class Game {
                 case keys.RETURN:
                     this.start();
                     break;
+                case keys.UP:
+                case keys.RIGHT:
+                case keys.DOWN:
+                case keys.LEFT:
+                    if (this.notBackwards(e.keyCode)) {
+                        setDirection(e.keyCode);
+                        e.preventDefault();
+                    }
+                    break;
                 // Arrow keys or nothing
                 default:
                     // Select levels
@@ -267,11 +281,6 @@ export default class Game {
                             this.currentLevel = this.levels[num - 1];
                             this.currentLevel.render();
                         }
-                    }
-
-                    if (e.keyCode in keys && this.notBackwards(e.keyCode)) {
-                        Directions.set(e.keyCode);
-                        e.preventDefault();
                     }
             }
         });

@@ -1,9 +1,9 @@
 {
     "compilerOptions": {
-        "outDir": "output",
-        "sourceMap": false,
+        "outDir": "tsickle-output",
+        "sourceMap": true,
         "target": "es6",
-        "module": "es6",
+        "module": "commonjs",
         "allowJs": false
     },
     "files": [

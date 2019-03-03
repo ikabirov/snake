@@ -2,8 +2,8 @@ import Piece from "./Piece";
 import {SIZE} from "./constants";
 
 type coord = [number, number];
-type line = [coord];
-export type LevelMap = [line];
+type line = coord[];
+export type LevelMap = line[];
 
 export default class Level {
 

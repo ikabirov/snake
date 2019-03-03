@@ -1,4 +1,3 @@
-build
-.sass-cache
+.idea
 node_modules
-output
+tsickle-output

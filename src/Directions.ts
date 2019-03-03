@@ -1,32 +1,43 @@
 import {keys} from "./constants";
 
-namespace Directions {
-    let queue: number[] = [];
-    let current: number = keys.RIGHT;
+let queue: number[] = [];
+let current: number = keys.RIGHT;
 
-    export function set(key: number): void {
-        queue.push(key);
-    }
-
-    export function get(): number {
-        return current;
-    }
-
-    export function pop(): number {
-        if (queue.length > 0) {
-            current = queue.shift();
-        }
-        return get();
-    }
-
-    export function flush(): void {
-        queue = [];
-        current = keys.RIGHT;
-    }
-
-    export function peek(): number {
-        return queue.length > 0 ? queue[queue.length - 1] : current;
-    }
+const enum Direction {
+    LEFT = "LEFT",
+    UP = "UP",
+    RIGHT = "RIGHT",
+    DOWN = "DOWN",
 }
 
-export default Directions;
+function setDirection(key: number): void {
+    queue.push(key);
+}
+
+function get(): number {
+    return current;
+}
+
+function popDirection(): number {
+    if (queue.length > 0) {
+        current = queue.shift();
+    }
+    return get();
+}
+
+function flushDirection(): void {
+    queue = [];
+    current = keys.RIGHT;
+}
+
+function peekDirection(): number {
+    return queue.length > 0 ? queue[queue.length - 1] : current;
+}
+
+export {
+    Direction,
+    setDirection,
+    popDirection,
+    flushDirection,
+    peekDirection,
+};
